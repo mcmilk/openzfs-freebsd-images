@@ -1,0 +1,46 @@
+name: image-build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  qemu-vm:
+    name: QEMU
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [13.3-STABLE, 14.1-STABLE, 15.0-CURRENT]
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    - name: Setup QEMU
+      timeout-minutes: 5
+      run: .github/workflows/scripts/qemu-1-setup.sh
+
+    - name: Start build machine
+      timeout-minutes: 5
+      run: .github/workflows/scripts/qemu-2-start.sh ${{ matrix.os }}
+
+    - name: Build image
+      timeout-minutes: 200
+      run: |
+        echo "ConnectTimeout 1" >> $HOME/.ssh/config
+        echo "StrictHostKeyChecking no" >> $HOME/.ssh/config
+        while pidof /usr/bin/qemu-system-x86_64 >/dev/null; do
+          ssh 2>/dev/null zfs@192.168.122.10 "uname -a" && break
+        done
+        scp .github/workflows/scripts/qemu-3-build.sh zfs@192.168.122.10:qemu-3-build.sh
+        PID=`pidof /usr/bin/qemu-system-x86_64`
+        ssh zfs@192.168.122.10 'sudo $HOME/qemu-3-build.sh' ${{ matrix.os }}
+        mkdir -p release
+        scp zfs@192.168.122.10:amd64-freebsd-${{ matrix.os }}.qcow2.zst release/
+
+    - name: Upload release
+      uses: actions/upload-artifact@v3
+      with:
+        name: FreeBSD-${{ matrix.os }}
+        path: release/*
