@@ -12,7 +12,20 @@ set -eu
 RELEASE="$1"
 VERSION="${1:0:4}"
 
-URL="https://openzfs.de/freebsd/amd64-freebsd-14.0.qcow2.zst"
+case $VERSION in
+  xx*)
+    URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/v2024-06-20a/amd64-freebsd-${RELEASE}.qcow2.zst"
+    URL="https://openzfs.de/freebsd/amd64-freebsd-$RELEASE.qcow2.zst"
+    ;;
+  yy*)
+    URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/v2024-06-20a/amd64-freebsd-${RELEASE}.qcow2.zst"
+    URL="https://openzfs.de/freebsd/amd64-freebsd-14.1-STABLE.qcow2.zst"
+    ;;
+  *)
+    URL="https://openzfs.de/freebsd/amd64-freebsd-$RELEASE.qcow2.zst"
+    ;;
+esac
+
 IMG="/mnt/cloudimg.qcow2"
 DISK="/mnt/openzfs.qcow2"
 sudo chown -R $(whoami) /mnt
