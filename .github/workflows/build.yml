@@ -1,5 +1,4 @@
 name: image-build
-
 on:
   push:
   pull_request:
@@ -12,6 +11,8 @@ jobs:
       matrix:
         os: [13.3-STABLE, 14.1-STABLE, 15.0-CURRENT]
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v4
       with:
@@ -37,10 +38,10 @@ jobs:
         PID=`pidof /usr/bin/qemu-system-x86_64`
         ssh zfs@192.168.122.10 'sudo $HOME/qemu-3-build.sh' ${{ matrix.os }}
         mkdir -p release
-        scp zfs@192.168.122.10:amd64-freebsd-${{ matrix.os }}.qcow2.zst release/
+        scp zfs@192.168.122.10:amd64-freebsd-${{ matrix.os }}.qcow2.zst .
 
     - name: Upload release
-      uses: actions/upload-artifact@v3
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
       with:
-        name: FreeBSD-${{ matrix.os }}
-        path: release/*
+        files: amd64-freebsd-${{ matrix.os }}.qcow2.zst

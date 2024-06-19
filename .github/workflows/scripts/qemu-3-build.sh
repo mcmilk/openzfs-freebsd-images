@@ -49,7 +49,7 @@ function build {
     echo "Installing cloud-init ..."
     echo "
 export ASSUME_ALWAYS_YES=YES
-pkg install bash ca_root_nss py39-cloud-init git npm qemu-guest-agent
+pkg install bash ca_root_nss py311-cloud-init git npm qemu-guest-agent
 chsh -s /usr/local/bin/bash root
 pw mod user root -w no
 touch /etc/rc.conf
