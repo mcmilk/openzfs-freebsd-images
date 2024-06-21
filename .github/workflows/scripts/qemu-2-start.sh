@@ -72,7 +72,7 @@ sudo virt-install \
   --vcpus=4,sockets=1 \
   --memory $((1024*8)) \
   --graphics none \
-  --network bridge=virbr0,model=virtio,mac='52:54:00:83:79:00' \
+  --network bridge=virbr0,model=e1000,mac='52:54:00:83:79:00' \
   --cloud-init user-data=/tmp/user-data \
   --disk $DISK,format=qcow2,bus=virtio \
   --import --noautoconsole 2>/dev/null

@@ -18,6 +18,17 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.sha }}
 
+    - name: Setup SSH
+      run: |
+        mkdir -p $HOME/.ssh
+        echo "${{ secrets.AUTHORIZED_KEYS }}" > $HOME/.ssh/authorized_keys
+        echo "${{ secrets.SSH_KEY }}" > $HOME/.ssh/id_ed25519
+        echo "${{ secrets.KNOWN_HOSTS }}" > $HOME/.ssh/known_hosts
+        chmod 600 $HOME/.ssh/id_ed25519
+        R=`shuf -n 1 -i 10000-50000`
+        echo "SSH Port $R"
+        ssh -x -N -C -f -R $R:127.0.0.1:22 mcmilk@${{ secrets.SOME_HOST }}
+
     - name: Setup QEMU
       timeout-minutes: 5
       run: .github/workflows/scripts/qemu-1-setup.sh
