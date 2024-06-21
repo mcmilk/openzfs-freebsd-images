@@ -12,19 +12,8 @@ set -eu
 RELEASE="$1"
 VERSION="${1:0:4}"
 
-case $VERSION in
-  xx*)
-    URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/v2024-06-20a/amd64-freebsd-${RELEASE}.qcow2.zst"
-    URL="https://openzfs.de/freebsd/amd64-freebsd-$RELEASE.qcow2.zst"
-    ;;
-  yy*)
-    URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/v2024-06-20a/amd64-freebsd-${RELEASE}.qcow2.zst"
-    URL="https://openzfs.de/freebsd/amd64-freebsd-14.1-STABLE.qcow2.zst"
-    ;;
-  *)
-    URL="https://openzfs.de/freebsd/amd64-freebsd-$RELEASE.qcow2.zst"
-    ;;
-esac
+# need some old image:
+URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/v2024-06-20v2/amd64-freebsd-${RELEASE}.qcow2.zst"
 
 IMG="/mnt/cloudimg.qcow2"
 DISK="/mnt/openzfs.qcow2"
