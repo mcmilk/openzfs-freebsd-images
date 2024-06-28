@@ -13,7 +13,7 @@ RELEASE="$1"
 VERSION="${1:0:4}"
 
 # need some old image:
-URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/v2024-06-20v2/amd64-freebsd-${RELEASE}.qcow2.zst"
+URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/2024-06-23/amd64-freebsd-${RELEASE}.qcow2.zst"
 
 IMG="/mnt/cloudimg.qcow2"
 DISK="/mnt/openzfs.qcow2"

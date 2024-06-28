@@ -101,7 +101,7 @@ touch /etc/rc.conf
 
 export ASSUME_ALWAYS_YES="YES"
 pkg remove -y qemu-guest-agent
-pkg-static install -y axel qemu-tools rsync || sleep 10000
+pkg install -y axel qemu-tools rsync
 
 # build "14.1" "14.1-STABLE"
 REL="$1"

@@ -6,10 +6,6 @@
 
 set -eu
 
-# docker isn't needed, free some memory
-# sudo systemctl stop docker.socket
-# sudo apt-get remove docker-ce-cli docker-ce podman
-
 # remove unneeded things
 sudo apt-get remove google-chrome-stable snapd
 
