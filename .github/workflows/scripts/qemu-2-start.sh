@@ -7,16 +7,31 @@
 set -eu
 
 # 13.3-STABLE
-# 14.1-STABLE
+# 14.1-RELEASE
 # 15.0-CURRENT
 RELEASE="$1"
-VERSION="${1:0:4}"
 
 # need some old image:
-URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/2024-06-23/amd64-freebsd-${RELEASE}.qcow2.zst"
+case ${1:0:2} in
+  13)
+    FILE="/amd64-freebsd-13.3-STABLE.qcow2.zst"
+    ;;
+  14)
+    FILE="/amd64-freebsd-14.1-STABLE.qcow2.zst"
+    ;;
+  15)
+    FILE="/amd64-freebsd-15.0-CURRENT.qcow2.zst"
+    ;;
+  *)
+    echo "Wrong FreeBSD Version"
+    exit 111
+    ;;
+esac
+REL="2024-06-23"
+URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/$REL/$FILE"
 
 IMG="/mnt/cloudimg.qcow2"
-DISK="/mnt/openzfs.qcow2"
+DISK="/mnt/freebsd.qcow2"
 sudo chown -R $(whoami) /mnt
 
 echo "Loading image $URL ..."
