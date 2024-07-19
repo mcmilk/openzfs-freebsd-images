@@ -14,20 +14,20 @@ RELEASE="$1"
 # need some old image:
 case ${1:0:2} in
   13)
-    FILE="/amd64-freebsd-13.3-STABLE.qcow2.zst"
+    FILE="amd64-freebsd-13.3-STABLE.qcow2.zst"
     ;;
   14)
-    FILE="/amd64-freebsd-14.1-STABLE.qcow2.zst"
+    FILE="amd64-freebsd-14.1-STABLE.qcow2.zst"
     ;;
   15)
-    FILE="/amd64-freebsd-15.0-CURRENT.qcow2.zst"
+    FILE="amd64-freebsd-15.0-CURRENT.qcow2.zst"
     ;;
   *)
     echo "Wrong FreeBSD Version"
     exit 111
     ;;
 esac
-REL="2024-06-23"
+REL="v2024-07-16"
 URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/$REL/$FILE"
 
 IMG="/mnt/cloudimg.qcow2"
@@ -44,8 +44,8 @@ qemu-img convert -q -f qcow2 -O qcow2 -c \
   -o compression_type=zstd,preallocation=off $IMG $DISK
 rm -f $IMG
 
-echo "Resizing image to 40GiB ..."
-qemu-img resize -q $DISK 40G
+echo "Resizing image to 16GiB ..."
+qemu-img resize -q $DISK 16G
 
 # generate ssh keys
 rm -f ~/.ssh/id_ed25519

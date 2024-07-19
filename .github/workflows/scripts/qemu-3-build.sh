@@ -14,10 +14,8 @@ function build {
 
   if [[ $NAME == *-RELEASE ]]; then
     BASE_URL="https://download.freebsd.org/releases/amd64/$NAME"
-    CLOUDINIT="cloud-init"
   else
     BASE_URL="https://download.freebsd.org/snapshots/amd64/$NAME"
-    CLOUDINIT="py311-cloud-init"
   fi
 
   MNT="/mnt/$VERSION"
@@ -53,21 +51,18 @@ function build {
   cat kernel-$VERSION.txz | tar xf - -C $MNT
   cat src-$VERSION.txz    | tar xf - -C $MNT
 
-  echo "Installing cloud-init ..."
+  echo "Installing packages ..."
   echo "
 export ASSUME_ALWAYS_YES=YES
-pkg install bash ca_root_nss git npm qemu-guest-agent
-pkg install $CLOUDINIT
+pkg install bash ca_root_nss git qemu-guest-agent python3 py311-cloud-init
 chsh -s /usr/local/bin/bash root
 pw mod user root -w no
 touch /etc/rc.conf
 " > $MNT/tmp/cloudify.sh
 
-  echo "pw mod user root -w no" >> $MNT/tmp/cloudify.sh
-  chmod +x $MNT/tmp/cloudify.sh
-
   cp /etc/resolv.conf $MNT/etc/resolv.conf
   mount -t devfs devfs $MNT/dev
+  chmod +x $MNT/tmp/cloudify.sh
   chroot $MNT /tmp/cloudify.sh
   umount $MNT/dev
   rm $MNT/tmp/cloudify.sh
