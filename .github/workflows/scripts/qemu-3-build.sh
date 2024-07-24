@@ -38,7 +38,7 @@ function build {
   cp /boot/loader.efi $MNT/EFI/BOOT/BOOTX64.efi
   umount $MNT
 
-  newfs -U -L FreeBSD /dev/${md_dev}p4
+  newfs -U -t -L FreeBSD /dev/${md_dev}p4
   mount /dev/${md_dev}p4 $MNT
 
   echo "Downloading base.txz, kernel.txz and src.txz @ ${BASE_URL} ..."
