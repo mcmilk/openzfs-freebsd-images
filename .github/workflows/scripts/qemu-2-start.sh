@@ -14,7 +14,7 @@ RELEASE="$1"
 # need some old image:
 case ${1:0:2} in
   13)
-    FILE="amd64-freebsd-13.3-STABLE.qcow2.zst"
+    FILE="amd64-freebsd-13.4-STABLE.qcow2.zst"
     ;;
   14)
     FILE="amd64-freebsd-14.1-STABLE.qcow2.zst"
@@ -27,7 +27,7 @@ case ${1:0:2} in
     exit 111
     ;;
 esac
-REL="v2024-07-24"
+REL="v2024-08-10"
 URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/$REL/$FILE"
 
 IMG="/mnt/cloudimg.qcow2"
