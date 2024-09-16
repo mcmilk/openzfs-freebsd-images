@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [13.3-RELEASE, 14.0-RELEASE, 14.1-RELEASE, 13.4-STABLE, 14.1-STABLE, 15.0-CURRENT]
+        os: [13.4-RELEASE, 14.0-RELEASE, 14.1-RELEASE, 13.4-STABLE, 14.1-STABLE, 15.0-CURRENT]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -17,17 +17,6 @@ jobs:
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.head.sha }}
-
-    - name: Setup SSH
-      run: |
-        mkdir -p $HOME/.ssh
-        echo "${{ secrets.AUTHORIZED_KEYS }}" > $HOME/.ssh/authorized_keys
-        echo "${{ secrets.SSH_KEY }}" > $HOME/.ssh/id_ed25519
-        echo "${{ secrets.KNOWN_HOSTS }}" > $HOME/.ssh/known_hosts
-        chmod 600 $HOME/.ssh/id_ed25519
-        R=`shuf -n 1 -i 10000-50000`
-        echo "SSH Port $R"
-        ssh -x -N -C -f -R $R:127.0.0.1:22 mcmilk@${{ secrets.SOME_HOST }}
 
     - name: Setup QEMU
       timeout-minutes: 5
