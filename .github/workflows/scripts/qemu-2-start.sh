@@ -19,7 +19,7 @@ case ${1:0:2} in
     NIC="rtl8139"
     ;;
   14)
-    FILE="amd64-freebsd-14.1-STABLE.qcow2.zst"
+    FILE="amd64-freebsd-14.2-STABLE.qcow2.zst"
     ;;
   15)
     FILE="amd64-freebsd-15.0-CURRENT.qcow2.zst"
@@ -29,7 +29,7 @@ case ${1:0:2} in
     exit 111
     ;;
 esac
-REL="v2024-08-10"
+REL="v2024-12-08"
 URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/$REL/$FILE"
 
 IMG="/mnt/cloudimg.qcow2"
