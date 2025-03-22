@@ -29,7 +29,7 @@ case ${1:0:2} in
     exit 111
     ;;
 esac
-REL="v2024-12-08"
+REL="v2024-12-30"
 URL="https://github.com/mcmilk/openzfs-freebsd-images/releases/download/$REL/$FILE"
 
 IMG="/mnt/cloudimg.qcow2"
