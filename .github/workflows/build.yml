@@ -38,10 +38,13 @@ jobs:
         PID=`pidof /usr/bin/qemu-system-x86_64`
         ssh zfs@192.168.122.10 'sudo $HOME/qemu-3-build.sh' ${{ matrix.os }}
         mkdir -p release
+        scp zfs@192.168.122.10:amd64-freebsd-${{ matrix.os }}.raw.zst .
         scp zfs@192.168.122.10:amd64-freebsd-${{ matrix.os }}.qcow2.zst .
 
     - name: Upload release
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: amd64-freebsd-${{ matrix.os }}.qcow2.zst
+        files: |
+          amd64-freebsd-${{ matrix.os }}.qcow2.zst
+          amd64-freebsd-${{ matrix.os }}.raw.zst

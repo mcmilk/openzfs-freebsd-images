@@ -9,8 +9,7 @@ set -eu
 function build {
   VERSION="$1"
   NAME="$2"
-  IMAGE="amd64-freebsd-$VERSION.raw"
-  IMAGE2="amd64-freebsd-$NAME.qcow2"
+  IMAGE="amd64-freebsd-$NAME"
 
   if [[ $NAME == *-RELEASE ]]; then
     BASE_URL="https://download.freebsd.org/releases/amd64/$NAME"
@@ -24,8 +23,8 @@ function build {
   gptboot=/boot/gptboot
 
   echo "Generating boot configuration..."
-  dd if=/dev/zero of=$IMAGE bs=1048576 count=6000
-  md_dev=$(mdconfig -a -t vnode -f $IMAGE)
+  dd if=/dev/zero of=$IMAGE.raw bs=1048576 count=6000
+  md_dev=$(mdconfig -a -t vnode -f $IMAGE.raw)
   gpart create -s gpt ${md_dev}
   gpart add -t freebsd-boot -s 1024 ${md_dev}
   gpart bootcode -b /boot/pmbr -p ${gptboot} -i 1 ${md_dev}
@@ -97,8 +96,9 @@ touch /etc/rc.conf
   mdconfig -du ${md_dev}
 
   echo "Converting image from raw to qcow2..."
-  qemu-img convert -f raw -O qcow2 $IMAGE $IMAGE2
-  zstd $IMAGE2
+  qemu-img convert -f raw -O qcow2 $IMAGE.raw $IMAGE.qcow2
+  zstd -T -11 -o $IMAGE.qcow2.zst $IMAGE.qcow2
+  zstd -T -11 -o $IMAGE.raw.zst $IMAGE.raw
   ls -lha amd*
 }
 

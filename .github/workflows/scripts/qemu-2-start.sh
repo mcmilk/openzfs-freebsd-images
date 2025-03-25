@@ -46,8 +46,8 @@ qemu-img convert -q -f qcow2 -O qcow2 -c \
   -o compression_type=zstd,preallocation=off $IMG $DISK
 rm -f $IMG
 
-echo "Resizing image to 16GiB ..."
-qemu-img resize -q $DISK 16G
+echo "Resizing image to 32GiB ..."
+qemu-img resize -q $DISK 32G
 
 # generate ssh keys
 rm -f ~/.ssh/id_ed25519
